@@ -7,7 +7,14 @@ This is a proof of concept of a solution for the minikube issue [#8439 host.mini
 
 This tool _should_ (only) fix a bug in your local minikube setup. However, please be aware that this is alpha-quality software, so be careful and, when in doubt, check the source code.
 
-So far, this prototype has been successfully tested on macOS with the Docker and hyperkit drivers. _In theory_, this approach should work everywhere, since it only adds a host line to the CoreDNS Corefile.
+So far, this prototype has been successfully tested with minikube v1.13.1 on:
+
+- macOS (10.15.6)
+  - Docker (19.03.12)
+  - hyperkit (0.20200224-44-gb54460)
+  - VirtualBox (6.1.14)
+
+_In theory_, this approach should work everywhere, since it only adds a host line to the CoreDNS Corefile.
 
 ## Build
 
