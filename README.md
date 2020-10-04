@@ -7,6 +7,8 @@ This is a proof of concept of a solution for the minikube issue [#8439 host.mini
 
 This tool _should_ (only) fix a bug in your local minikube setup. However, please be aware that this is alpha-quality software, so be careful and, when in doubt, check the source code.
 
+So far, this prototype has been successfully tested on macOS with the Docker and hyperkit drivers. _In theory_, this approach should work everywhere, since it only adds a host line to the CoreDNS Corefile.
+
 ## Build
 
 `go build`
