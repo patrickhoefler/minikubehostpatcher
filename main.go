@@ -52,10 +52,10 @@ func main() {
 	fmt.Println("CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
 
 	fmt.Println("\nThis is the patch we are going to apply:")
-	patchedData := fmt.Sprintf(coredns.PatchedDataTemplate, hostIP)
+	patchedCorefile := fmt.Sprintf(coredns.PatchedCorefileTemplate, hostIP)
 
 	dmp := diffmatchpatch.New()
-	diff := dmp.DiffMain(coredns.ExpectedData, patchedData, true)
+	diff := dmp.DiffMain(coredns.ExpectedCorefile, patchedCorefile, true)
 	fmt.Println(dmp.DiffPrettyText(diff))
 
 	fmt.Println("Getting current Corefile from configMap/coredns ...")
@@ -64,13 +64,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	newConfigMap := strings.Replace(oldConfigMap, coredns.ExpectedData, patchedData, 1)
+	newConfigMap := strings.Replace(oldConfigMap, coredns.ExpectedCorefile, patchedCorefile, 1)
 
 	if oldConfigMap == newConfigMap {
 		fmt.Println("Error: Corefile was not what we expected.")
 		fmt.Println()
 		fmt.Println("We were looking for:")
-		fmt.Println(coredns.ExpectedData)
+		fmt.Println(coredns.ExpectedCorefile)
 		fmt.Println()
 		fmt.Println("We received:")
 		fmt.Println("\n" + oldConfigMap)

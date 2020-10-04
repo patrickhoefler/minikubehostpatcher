@@ -1,8 +1,8 @@
 package coredns
 
 const (
-	// ExpectedData is the unpatched original Corefile
-	ExpectedData = `
+	// ExpectedCorefile is the unpatched original Corefile
+	ExpectedCorefile = `
   Corefile: |
     .:53 {
         errors
@@ -26,8 +26,8 @@ const (
     }
 `
 
-	// PatchedDataTemplate is the template for the pached Corefile
-	PatchedDataTemplate = `
+	// PatchedCorefileTemplate is the template for the pached Corefile
+	PatchedCorefileTemplate = `
   Corefile: |
     .:53 {
         errors
