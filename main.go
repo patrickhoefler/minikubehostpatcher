@@ -36,10 +36,19 @@ func main() {
 	fmt.Println(hostIP)
 
 	fmt.Println("\nChecking CoreDNS resolution of host.minikube.internal ...")
-	resolvedHostIP, err := kubectl.QueryHostIPFromCoreDNS()
+	var resolvedHostIP string
+	for i := 0; i < 3; i++ {
+		resolvedHostIP, err = kubectl.QueryHostIPFromCoreDNS()
+		if err == nil {
+			break
+		}
+		fmt.Println("CoreDNS might not be ready yet, trying again ...")
+		time.Sleep(10)
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Println(resolvedHostIP)
 
 	if resolvedHostIP == hostIP {
@@ -52,10 +61,10 @@ func main() {
 	fmt.Println("CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
 
 	fmt.Println("\nThis is the patch we are going to apply:")
-	patchedCorefile := fmt.Sprintf(coredns.PatchedCorefileTemplate, hostIP)
+	patchedCorefileSnippet := fmt.Sprintf(coredns.PatchedCorefileSnippetTemplate, hostIP)
 
 	dmp := diffmatchpatch.New()
-	diff := dmp.DiffMain(coredns.ExpectedCorefile, patchedCorefile, true)
+	diff := dmp.DiffMain(coredns.ExpectedCorefileSnippet, patchedCorefileSnippet, true)
 	fmt.Println(dmp.DiffPrettyText(diff))
 
 	fmt.Println("Getting current Corefile from configMap/coredns ...")
@@ -64,13 +73,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	newConfigMap := strings.Replace(oldConfigMap, coredns.ExpectedCorefile, patchedCorefile, 1)
+	newConfigMap := strings.Replace(oldConfigMap, coredns.ExpectedCorefileSnippet, patchedCorefileSnippet, 1)
 
 	if oldConfigMap == newConfigMap {
 		fmt.Println("Error: Corefile was not what we expected.")
 		fmt.Println()
 		fmt.Println("We were looking for:")
-		fmt.Println(coredns.ExpectedCorefile)
+		fmt.Println("...")
+		fmt.Println(coredns.ExpectedCorefileSnippet)
+		fmt.Println("...")
 		fmt.Println()
 		fmt.Println("We received:")
 		fmt.Println("\n" + oldConfigMap)
@@ -102,12 +113,11 @@ func main() {
 		if err == nil {
 			break
 		}
-		if strings.Index(err.Error(), "connection timed out") >= 0 {
-			fmt.Println("CoreDNS not ready yet, trying again ...")
-			time.Sleep(1)
-		} else {
-			log.Fatal(err)
-		}
+		fmt.Println("CoreDNS might not be ready yet, trying again ...")
+		time.Sleep(10)
+	}
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	if resolvedHostIP != hostIP {
