@@ -17,7 +17,7 @@ This tool _should_ (only) fix a bug in your local minikube setup. However, pleas
 
 ## Output
 
-```shell
+```text
 ❯ minikube start
 😄  minikube v1.13.1 on Darwin 10.15.6
 ✨  Automatically selected the docker driver
