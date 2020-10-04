@@ -49,7 +49,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Println("\nCoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
+	fmt.Println("CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
 
 	fmt.Println("\nThis is the patch we are going to apply:")
 	patchedData := fmt.Sprintf(coredns.PatchedDataTemplate, hostIP)
