@@ -3,18 +3,25 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/patrickhoefler/minikubehostpatcher)](https://goreportcard.com/report/github.com/patrickhoefler/minikubehostpatcher)
 [![Maintainability](https://api.codeclimate.com/v1/badges/af9c56e5eb950771cc56/maintainability)](https://codeclimate.com/github/patrickhoefler/minikubehostpatcher/maintainability)
 
-This is a proof of concept of a solution for the minikube issue [#8439 host.minikube.internal not visible in containers](https://github.com/kubernetes/minikube/issues/8439).
+This is a proof of concept of a solution for the Minikube issue [#8439 host.minikube.internal not visible in containers](https://github.com/kubernetes/minikube/issues/8439).
 
-This tool _should_ (only) fix a bug in your local minikube setup. However, please be aware that this is alpha-quality software, so be careful and, when in doubt, check the source code.
+According to the Minikube documentation page [Host access](https://minikube.sigs.k8s.io/docs/handbook/host-access/), it should be possible to get the host machine IP address using `host.minikube.internal` from inside pods. Unfortunately, this mechanism is currently broken. `minikubehostpatcher` remedies this situation.
 
-So far, this prototype has been successfully tested with minikube v1.13.1 on:
+Please be aware that this tool is alpha-quality software, so be careful and, when in doubt, check the source code.
 
-- macOS (10.15.6)
-  - Docker (19.03.12)
-  - hyperkit (0.20200224-44-gb54460)
-  - VirtualBox (6.1.14)
+This prototype is continously tested on macOS 10.15.6 with Minikube 1.13.0, Virtualbox 6.1.14 and the following Kubernetes versions:
 
-_In theory_, this approach should work everywhere, since it only adds a host line to the CoreDNS Corefile.
+- 1.19.2
+- 1.18.9
+- 1.17.12
+- 1.16.15
+
+In addition, it has been manually tested on macOS 10.15.6 with Minikube 1.13.1, Kubernetes 1.19.2 and the following drivers:
+
+- Docker (19.03.12)
+- hyperkit (0.20200224-44-gb54460)
+
+Currently, it is not compatible with Kubernetes 1.15 and earlier.
 
 ## Build
 
@@ -50,13 +57,6 @@ CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 
 
 This is the patch we are going to apply:
 
-  Corefile: |
-    .:53 {
-        errors
-        health {
-           lameduck 5s
-        }
-        ready
         kubernetes cluster.local in-addr.arpa ip6.arpa {
            pods insecure
            fallthrough in-addr.arpa ip6.arpa
@@ -67,14 +67,6 @@ This is the patch we are going to apply:
            fallthrough
         }
         prometheus :9153
-        forward . /etc/resolv.conf {
-           max_concurrent 1000
-        }
-        cache 30
-        loop
-        reload
-        loadbalance
-    }
 
 Getting current Corefile from configMap/coredns ...
 
