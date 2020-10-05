@@ -15,13 +15,14 @@ This prototype is continously tested on macOS 10.15.6 with Minikube 1.13.0, Virt
 - 1.18.9
 - 1.17.12
 - 1.16.15
+- 1.15.12
 
 In addition, it has been manually tested on macOS 10.15.6 with Minikube 1.13.1, Kubernetes 1.19.2 and the following drivers:
 
 - Docker (19.03.12)
 - hyperkit (0.20200224-44-gb54460)
 
-Currently, it is not compatible with Kubernetes 1.15 and earlier.
+Currently, it is not compatible with Kubernetes 1.14 and earlier.
 
 ## Build
 
