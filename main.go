@@ -35,7 +35,7 @@ func main() {
 	}
 	fmt.Println(hostIP)
 
-	fmt.Println("\nChecking CoreDNS resolution of host.minikube.internal ...")
+	fmt.Println("\nChecking DNS resolution of host.minikube.internal ...")
 	var resolvedHostIP string
 	for i := 0; i < 3; i++ {
 		resolvedHostIP, err = kubectl.QueryHostIPFromCoreDNS()
@@ -58,9 +58,9 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Println("CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
+	fmt.Println("DNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
 
-	fmt.Println("\nThis is the Corefile entry we are going to add:")
+	fmt.Println("\nThis is the CoreDNS Corefile entry we are going to add:")
 	patchedCorefileSnippet := fmt.Sprintf(coredns.PatchedCorefileSnippetTemplate, hostIP)
 
 	dmp := diffmatchpatch.New()
@@ -107,7 +107,7 @@ func main() {
 	}
 	fmt.Print(output)
 
-	fmt.Println("\nChecking CoreDNS resolution of host.minikube.internal ...")
+	fmt.Println("\nChecking DNS resolution of host.minikube.internal ...")
 	for i := 0; i < 3; i++ {
 		resolvedHostIP, err = kubectl.QueryHostIPFromCoreDNS()
 		if err == nil {
