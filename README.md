@@ -45,7 +45,6 @@ Currently, it is not compatible with Kubernetes 1.14 and earlier.
 🌟  Enabled addons: default-storageclass, storage-provisioner
 🏄  Done! kubectl is now configured to use "minikube" by default
 
-
 ❯ ./minikubehostpatcher
 Checking if we are in the minikube context ... ✅
 
@@ -56,10 +55,8 @@ Checking CoreDNS resolution of host.minikube.internal ...
 
 CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀
 
-This is the patch we are going to apply:
+This is the Corefile entry we are going to add:
 
-        kubernetes cluster.local in-addr.arpa ip6.arpa {
-           pods insecure
            fallthrough in-addr.arpa ip6.arpa
            ttl 30
         }
@@ -101,7 +98,7 @@ data:
     }
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2020-10-04T17:32:29Z"
+  creationTimestamp: "2020-10-05T12:30:56Z"
   managedFields:
   - apiVersion: v1
     fieldsType: FieldsV1
@@ -111,23 +108,21 @@ metadata:
         f:Corefile: {}
     manager: kubeadm
     operation: Update
-    time: "2020-10-04T20:08:26Z"
+    time: "2020-10-05T12:30:56Z"
   name: coredns
   namespace: kube-system
-  resourceVersion: "4098"
+  resourceVersion: "212"
   selfLink: /api/v1/namespaces/kube-system/configmaps/coredns
-  uid: 8589b276-c0b3-41c1-9e02-20bb65d1e23d
+  uid: a5a7e3ba-4315-4364-88d0-070311e92aa5
 
-Applying patched Corefile ...
-Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
-configmap/coredns configured
+Replacing patched Corefile ...
+configmap/coredns replaced
 
 Restarting coredns deployment to pick up the change ...
 deployment.apps/coredns restarted
 
 Checking CoreDNS resolution of host.minikube.internal ...
 host.minikube.internal now resolves to 192.168.65.2 🙂
-
 
 ❯ ./minikubehostpatcher
 Checking if we are in the minikube context ... ✅

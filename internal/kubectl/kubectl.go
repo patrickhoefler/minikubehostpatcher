@@ -7,13 +7,13 @@ import (
 	"strings"
 )
 
-// ApplyToKubeSystem applies the provided config to the kube-system namespace
-func ApplyToKubeSystem(config string) (output string, err error) {
-	applyCmd := exec.Command(
-		"kubectl", "--namespace", "kube-system", "apply", "-f", "-",
+// ReplaceInKubeSystem applies the provided config to the kube-system namespace
+func ReplaceInKubeSystem(config string) (output string, err error) {
+	replaceCmd := exec.Command(
+		"kubectl", "--namespace", "kube-system", "replace", "-f", "-",
 	)
 
-	stdin, err := applyCmd.StdinPipe()
+	stdin, err := replaceCmd.StdinPipe()
 	if err != nil {
 		return
 	}
@@ -23,15 +23,15 @@ func ApplyToKubeSystem(config string) (output string, err error) {
 		io.WriteString(stdin, config)
 	}()
 
-	applyCmdOutput, err := applyCmd.CombinedOutput()
+	replaceCmdOutput, err := replaceCmd.CombinedOutput()
 	if err != nil {
 		err = errors.New(
-			string(applyCmdOutput) + "\n\n" +
-				"Tried to apply:\n\n" + config,
+			string(replaceCmdOutput) + "\n\n" +
+				"Tried to replace:\n\n" + config,
 		)
 	}
 
-	output = string(applyCmdOutput)
+	output = string(replaceCmdOutput)
 	return
 }
 
