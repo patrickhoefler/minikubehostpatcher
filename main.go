@@ -60,7 +60,7 @@ func main() {
 
 	fmt.Println("CoreDNS resolution of host.minikube.internal is not working yet, let's fix this 😀")
 
-	fmt.Println("\nThis is the patch we are going to apply:")
+	fmt.Println("\nThis is the Corefile entry we are going to add:")
 	patchedCorefileSnippet := fmt.Sprintf(coredns.PatchedCorefileSnippetTemplate, hostIP)
 
 	dmp := diffmatchpatch.New()
@@ -93,8 +93,8 @@ func main() {
 	diff = dmp.DiffMain(oldConfigMap, newConfigMap, true)
 	fmt.Println(dmp.DiffPrettyText(diff))
 
-	fmt.Println("Applying patched Corefile ...")
-	output, err := kubectl.ApplyToKubeSystem(newConfigMap)
+	fmt.Println("Replacing patched Corefile ...")
+	output, err := kubectl.ReplaceInKubeSystem(newConfigMap)
 	if err != nil {
 		log.Fatal(err)
 	}
