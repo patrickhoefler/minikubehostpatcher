@@ -67,7 +67,7 @@ func GetCurrentContext() (context string, err error) {
 func QueryHostIPFromCoreDNS() (hostIP string, err error) {
 	output, err := exec.Command(
 		"kubectl", "run", "--attach", "--quiet", "--rm", "--restart=Never", "--command",
-		"--image=tutum/dnsutils@sha256:d2244ad47219529f1003bd1513f5c99e71655353a3a63624ea9cb19f8393d5fe", "dnsutils",
+		"--image=gcr.io/kubernetes-e2e-test-images/dnsutils:1.3@sha256:b31bcf7ef4420ce7108e7fc10b6c00343b21257c945eec94c21598e72a8f2de0", "dnsutils",
 		"dig", "+short", "host.minikube.internal",
 	).CombinedOutput()
 	if err != nil {
