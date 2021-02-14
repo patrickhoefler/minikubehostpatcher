@@ -43,7 +43,7 @@ func main() {
 			break
 		}
 		fmt.Println("CoreDNS might not be ready yet, trying again ...")
-		time.Sleep(10)
+		time.Sleep(10 * time.Second)
 	}
 	if err != nil {
 		log.Fatal(err)
