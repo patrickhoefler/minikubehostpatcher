@@ -11,9 +11,10 @@ Please be aware that this tool is alpha-quality software, so be careful and, whe
 
 This prototype is continously tested on macOS 10.15.6 with Minikube 1.13.0, Virtualbox 6.1.14 and the following Kubernetes versions:
 
-- 1.19.2
-- 1.18.9
-- 1.17.12
+- 1.20.2
+- 1.19.7
+- 1.18.15
+- 1.17.17
 - 1.16.15
 - 1.15.12
 
