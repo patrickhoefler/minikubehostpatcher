@@ -37,7 +37,7 @@ func main() {
 
 	fmt.Println("\nChecking DNS resolution of host.minikube.internal ...")
 	var resolvedHostIP string
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 6; i++ {
 		resolvedHostIP, err = kubectl.QueryHostIPFromCoreDNS()
 		if err == nil {
 			break
