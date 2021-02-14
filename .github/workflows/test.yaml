@@ -1,9 +1,12 @@
 name: test
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
-      - '*'
+      - main
 
 jobs:
   macos:
@@ -12,23 +15,23 @@ jobs:
         kubernetes: ['v1.19.2', 'v1.18.9', 'v1.17.12', 'v1.16.15', '1.15.12']
     runs-on: macos-latest
     steps:
-    - name: Install Go
-      uses: actions/setup-go@v2
+      - name: Install Go
+        uses: actions/setup-go@v2
 
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Build the binary
-      run: go build
+      - name: Build the binary
+        run: go build
 
-    - name: Install Minikube
-      run: brew install minikube
+      - name: Install Minikube
+        run: brew install minikube
 
-    - name: Start Minikube
-      run: minikube start --kubernetes-version ${{ matrix.kubernetes }}
+      - name: Start Minikube
+        run: minikube start --kubernetes-version ${{ matrix.kubernetes }}
 
-    - name: Run the binary
-      run: ./minikubehostpatcher
+      - name: Run the binary
+        run: ./minikubehostpatcher
 
-    - name: Run the binary again
-      run: ./minikubehostpatcher
+      - name: Run the binary again
+        run: ./minikubehostpatcher
